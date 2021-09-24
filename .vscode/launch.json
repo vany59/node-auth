@@ -1,0 +1,17 @@
+{
+  "configurations": [
+  {
+    "name": "Launch Program",
+    "program": "${workspaceFolder}/src/index.js",
+    "request": "launch",
+    "skipFiles": [
+      "<node_internals>/**"
+    ],
+    "type": "pwa-node",
+    "env": {
+      "DB_HOST": "mongodb://root:123456@localhost:27017/srv-auth",
+      "PORT": "4000",
+    }
+  }
+  ]
+}

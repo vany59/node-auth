@@ -5,19 +5,26 @@ var bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const { User } = require("./user.schema");
 const { verifyJwtToken } = require("./utils");
+const {
+  TOKENLIFE,
+  REFESHTOKENLIFE,
+  ACCESS_SECRET,
+  REFRESH_SECRET,
+} = require("./constant");
 
 const router = express.Router();
 const app = express();
 
-const TOKENLIFE = 300;
-const REFESHTOKENLIFE = 86400;
-const ACCESS_SECRET = "access_secret";
-const REFRESH_SECRET = "refresh_secret";
-
 //connect db
-mongoose.connect("mongodb://root:123456@localhost:27017/srv-auth", {
+mongoose.connect(process.env.DB_HOST, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+});
+
+app.use(bodyParser.json());
+app.use("/api", router);
+app.listen(process.env.PORT || 5000, () => {
+  console.log("server is running");
 });
 
 router.post("/signup", async (req, res) => {
@@ -155,10 +162,4 @@ router.get("/data", authMiddleware, (req, res) => {
     code: 200,
     data: "ok",
   });
-});
-
-app.use(bodyParser.json());
-app.use("/api", router);
-app.listen(process.env.PORT || 5000, () => {
-  console.log("server is running");
 });
